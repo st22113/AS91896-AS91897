@@ -1,0 +1,80 @@
+from tkinter import * 
+from tkinter import Label
+from tkinter import Listbox
+from tkinter import Frame
+
+# window created 
+main_window = Tk()
+main_window.geometry("875x720")
+#main_window.resizable(width=False, height=False)
+main_window.title("Julie's Party Hire")
+
+listbox = Listbox(main_window, height=10, width=60)
+listbox.grid(row=0, column=0, columnspan=2, padx=(30,30), pady=(20,20))
+
+frame_input = Frame(main_window)
+frame_input.grid(row=5, column=3, sticky="n")
+
+# commands
+def quit():
+    main_window.destroy()
+
+def submit():
+    name = entry_name.get()
+    receipt = entry_receipt.get()
+    item = entry_item.get()
+    quantity = entry_quantity.get()
+    
+    if name and receipt and item and quantity:
+        details = f"{name} - Receipt: {receipt}, Item: {item}, Quantity: {quantity}"
+        listbox.insert(END, details)
+
+def delete():
+    selected_index = listbox.curselection()
+    while selected_index:
+        listbox.delete(selected_index)  
+
+def clear_entries():
+    entry_name.delete(0,END)
+    entry_receipt.delete(0,END)
+    entry_item.delete(0,END)
+    entry_quantity.delete(0,END)
+
+# labels
+label_window = Label(main_window, text="Julie's Party Hire", font="helvetica 35 bold")
+label_name = Label(main_window, text="Full Customer Name:")
+label_receipt = Label(main_window, text="Receipt Number:")
+label_item = Label(main_window, text="Item Name:")
+label_quantity = Label(main_window, text="Quantity of Items:")
+label_window.grid(row=1, column=0, columnspan=2)
+
+
+# Grid 
+label_name.grid(row=2, column=0, pady=5, padx=20, sticky="w")
+label_receipt.grid(row=3, column=0, pady=5, padx=20, sticky="w")
+label_item.grid(row=4, column=0, pady=5, padx=20, sticky="w")
+label_quantity.grid(row=5, column=0, pady=5, padx=20, sticky="w")
+
+# User Entry
+entry_name = Entry(main_window)
+entry_receipt = Entry(main_window)
+entry_item = Entry(main_window)
+entry_quantity = Entry(main_window)
+
+entry_name.grid(row=2, column=1, pady=5, padx=5, sticky="w")
+entry_receipt.grid(row=3, column=1, pady=5, padx=5, sticky="w")
+entry_item.grid(row=4, column=1, pady=5, padx=5, sticky="w")
+entry_quantity.grid(row=5, column=1, pady=5, padx=5, sticky="w")
+
+btn_submit = Button(main_window, text="submit", command=submit)
+btn_delete = Button(main_window, text="Delete Selected", command=delete)
+btn_clear = Button(main_window, text="Clear Entries", command=clear_entries)
+btn_quit=Button(main_window, text="Quit", width=6, command=quit)
+
+btn_submit.grid(row=2, column=2, padx=5, pady=10, sticky="w")
+btn_delete.grid(row=3, column=2, padx=5, pady=10, sticky="w")
+btn_clear.grid(row=4, column=2, padx=5, pady=10, sticky="w")
+btn_quit.grid(row=5, column=2, padx=5, sticky="w")
+
+
+main_window.mainloop()
