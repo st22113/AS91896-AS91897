@@ -2,6 +2,8 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter.messagebox import askyesno
 from tkinter import ttk
+from tkinter import *
+from PIL import ImageTk, Image
 
 # Commands
 
@@ -33,10 +35,14 @@ def submit(): # Submits all enteries into the treeveiw
                 if quantity_num < 1 or quantity_num > 500: # Checks if item nnumber is between 1-500
                     messagebox.showerror(title="Quantity Error", message="Quantity must be between 1-500")
                 else:
-                    tree.insert("", "end", values=(name, receipt, item, quantity))
-                    clear_entries()
+                    if not receipt.isdigit():
+                        messagebox.showerror(title="Receipt Error", message="Your Receipt number can only contain numbers")
+                    else:
+                        tree.insert("", "end", values=(name, receipt, item, quantity))
+                        clear_entries()
     else:
         messagebox.showerror(title="Entry Error", message="Please fill out all fields")
+
 
                  
            
@@ -56,10 +62,16 @@ def clear_entries(): # Command to clear entries when submitted
 
 # Main Window 
 main_window = Tk()
-main_window.geometry("900x680")
+main_window.geometry("870x560")
 main_window.title("Julie's Party Hire")
 
-tree = ttk.Treeview(main_window, columns=("Name", "Receipt Number", "Item Name", "Quantity"), show="headings") # Heading and layout for Tree Veiw
+main_window.configure(bg='#6e758a')
+
+# PIP Image insert
+
+# tree view layout
+tree = ttk.Treeview(main_window, columns=("Name", "Receipt Number", "Item Name", "Quantity"), show="headings") 
+# Heading and layout for Tree Veiw
 tree.heading("Name", text="Full Name")
 tree.heading("Receipt Number", text="Receipt Number")
 tree.heading("Item Name", text="Item Name")
@@ -67,11 +79,11 @@ tree.heading("Quantity", text="Quantity of Items")
 tree.grid(row=1, column=0, columnspan=2, padx=(30, 30), pady=(20, 20)) # Grid placement of Treeview
 
 # Labels For Entry Boxed 
-label_window = Label(main_window, text="Julie's Party Hire", font="helvetica 35 bold")
-label_name = Label(main_window, text="Full Customer Name :")
-label_receipt = Label(main_window, text="Receipt Number :")
-label_item = Label(main_window, text="Item Name :")
-label_quantity = Label(main_window, text="Quantity of Items :")
+label_window = Label(main_window, text="Julie's Party Hire", font="helvetica 35 bold", bg='#6e758a')
+label_name = Label(main_window, text="Full Customer Name :", bg='#6e758a')
+label_receipt = Label(main_window, text="Receipt Number :", bg='#6e758a')
+label_item = Label(main_window, text="Item Name :", bg='#6e758a')
+label_quantity = Label(main_window, text="Quantity of Items :", bg='#6e758a')
 label_window.grid(row=2, column=0, columnspan=2)
 
 # Label Grid placement
@@ -93,13 +105,14 @@ entry_item.grid(row=5, column=1, pady=5, padx=5, sticky="w")
 entry_quantity.grid(row=6, column=1, pady=5, padx=5, sticky="w")
 
 # Buttons created
-btn_submit = Button(main_window, text="Submit", command=submit)
-btn_delete = Button(main_window, text="Delete Selected", command=delete)
-btn_quit = Button(main_window, text="Quit", width=6, command=quit)
+btn_submit = Button(main_window, text="Submit", command=submit, width=6, fg="green")
+btn_delete = Button(main_window, text="Delete Selected", command=delete, fg="red")
+btn_quit = Button(main_window, text="Quit", command=quit, width=6)
 
 # Button Grid
 btn_submit.grid(row=7, column=1, padx=5, pady=10, sticky="w")
-btn_delete.grid(row=3, column=1, padx=5, pady=10, sticky="e")
+btn_delete.grid(row=7, column=0, padx=5, pady=10, sticky="e")
 btn_quit.grid(row=8, column=1, padx=5, pady=10, sticky="e")
 
+# Main Window Loop
 main_window.mainloop()
