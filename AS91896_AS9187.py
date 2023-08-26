@@ -4,6 +4,9 @@ from tkinter.messagebox import askyesno
 from tkinter import ttk
 from tkinter import *
 from PIL import ImageTk, Image
+from tkinter import Label
+import tkinter as tk
+
 
 # Commands
 
@@ -18,28 +21,29 @@ def submit(): # Submits all enteries into the treeveiw
     item = entry_item.get() # gets entry item
     quantity = entry_quantity.get() # gets entry quantity 
     
-    if name and receipt and item and quantity:
-        num_in_name = False
+    if name and receipt and item and quantity: # if statment error shown 
+        num_in_name = False # Detects if numbers are included in the name 
         for char in name:
             if char.isdigit():
                 num_in_name = True
                 break
 
-        if num_in_name:
+        if num_in_name: # Displays error message for num_in_name
             messagebox.showerror(title="Full Name Error", message="There can only be letters in your name")
         else:
-            if not quantity.isdigit(): # Checks for leters in entry box
+            if not quantity.isdigit(): # Checks for leters in entry box displaing Error
                 messagebox.showerror(title="Quantity Error", message="Quantity must be a valid number")
             else:
-                quantity_num = int(quantity)
+                quantity_num = int(quantity) 
                 if quantity_num < 1 or quantity_num > 500: # Checks if item nnumber is between 1-500
                     messagebox.showerror(title="Quantity Error", message="Quantity must be between 1-500")
+                    #displays error message for quantity 
                 else:
-                    if not receipt.isdigit():
+                    if not receipt.isdigit(): # checks if reciept entry box has digits else prints error
                         messagebox.showerror(title="Receipt Error", message="Your Receipt number can only contain numbers")
                     else:
                         tree.insert("", "end", values=(name, receipt, item, quantity))
-                        clear_entries()
+                        clear_entries() # When entries submitted clear all enttry boxes 
     else:
         messagebox.showerror(title="Entry Error", message="Please fill out all fields")
 
@@ -49,28 +53,45 @@ def submit(): # Submits all enteries into the treeveiw
 def delete(): # Deletes a selected row in the tree view
     selected_item = tree.selection() # Selects Row
     if selected_item:
-        tree.delete(selected_item)
+        tree.delete(selected_item) # ensures a row is selected and delettes seleted row
     else:
         messagebox.showerror(title="Error", message="Please select a row to delete")
 
 def clear_entries(): # Command to clear entries when submitted 
-    entry_name.delete(0,END)
-    entry_receipt.delete(0,END)
-    entry_item.delete(0,END)
-    entry_quantity.delete(0,END)
+    entry_name.delete(0,END) # clear name
+    entry_receipt.delete(0,END) # clear reciept
+    entry_item.delete(0,END) # clear item
+    entry_quantity.delete(0,END) # clear quantity
 
 
-# Main Window 
-main_window = Tk()
-main_window.geometry("870x560")
+# Main Window setup
+main_window = Tk() 
+main_window.geometry("870x600")
 main_window.title("Julie's Party Hire")
 
-main_window.configure(bg='#6e758a')
+main_window.configure(bg='#6e758a') # programme background colour
 
 # PIP Image insert
+image_path = "/Volumes/PHOENIX/julieparty.jpg"
+original_image = Image.open(image_path)
+
+# Define the desired size
+desired_size = (100, 100)
+
+# Resize the image without antialiasing
+resized_image = original_image.resize(desired_size)
+
+# Convert the resized image to PhotoImage
+img1 = ImageTk.PhotoImage(resized_image)
+
+# Create a label with the resized image
+label_image = tk.Label(main_window, image=img1)
+label_image.grid(row=2, column=1)
 
 # tree view layout
-tree = ttk.Treeview(main_window, columns=("Name", "Receipt Number", "Item Name", "Quantity"), show="headings") 
+
+tree = ttk.Treeview(main_window, columns=("Name", "Receipt Number", "Item Name", "Quantity"), show="headings") # Treeveiw column headlines
+
 # Heading and layout for Tree Veiw
 tree.heading("Name", text="Full Name")
 tree.heading("Receipt Number", text="Receipt Number")
@@ -78,13 +99,13 @@ tree.heading("Item Name", text="Item Name")
 tree.heading("Quantity", text="Quantity of Items")
 tree.grid(row=1, column=0, columnspan=2, padx=(30, 30), pady=(20, 20)) # Grid placement of Treeview
 
-# Labels For Entry Boxed 
-label_window = Label(main_window, text="Julie's Party Hire", font="helvetica 35 bold", bg='#6e758a')
-label_name = Label(main_window, text="Full Customer Name :", bg='#6e758a')
-label_receipt = Label(main_window, text="Receipt Number :", bg='#6e758a')
-label_item = Label(main_window, text="Item Name :", bg='#6e758a')
-label_quantity = Label(main_window, text="Quantity of Items :", bg='#6e758a')
-label_window.grid(row=2, column=0, columnspan=2)
+# Labels For Entry Boxes
+label_window = Label(main_window, text="Julie's Party Hire", font="helvetica 35 bold", bg='#6e758a',  fg="white") # # Heading Title
+label_name = Label(main_window, text="Full Customer Name :", bg='#6e758a') # name label
+label_receipt = Label(main_window, text="Receipt Number :", bg='#6e758a') # receipt label
+label_item = Label(main_window, text="Item Name :", bg='#6e758a') # item label
+label_quantity = Label(main_window, text="Quantity of Items :", bg='#6e758a') # quantity label 
+label_window.grid(row=2, column=0, columnspan=2) 
 
 # Label Grid placement
 label_name.grid(row=3, column=0, pady=5, padx=20, sticky="e")
