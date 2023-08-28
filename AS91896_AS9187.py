@@ -1,10 +1,9 @@
 from tkinter import *
 from tkinter import messagebox
 from tkinter.messagebox import askyesno
-from tkinter import ttk
-from tkinter import *
 from PIL import ImageTk, Image
 from tkinter import Label
+from tkinter import ttk
 import tkinter as tk
 
 
@@ -63,6 +62,9 @@ def clear_entries(): # Command to clear entries when submitted
     entry_item.delete(0,END) # clear item
     entry_quantity.delete(0,END) # clear quantity
 
+def center_message_box(title, message):
+    messagebox = tk.Toplevel(main_window)
+    messagebox.title(title)
 
 # Main Window setup
 main_window = Tk() 
@@ -71,28 +73,24 @@ main_window.title("Julie's Party Hire")
 
 main_window.configure(bg='#6e758a') # programme background colour
 
+
 # PIP Image insert
 image_path = "/Volumes/PHOENIX/julieparty.jpg"
 original_image = Image.open(image_path)
-
-# Define the desired size
+# Desired size mage
 desired_size = (100, 100)
-
-# Resize the image without antialiasing
 resized_image = original_image.resize(desired_size)
-
 # Convert the resized image to PhotoImage
 img1 = ImageTk.PhotoImage(resized_image)
-
-# Create a label with the resized image
 label_image = tk.Label(main_window, image=img1)
 label_image.grid(row=2, column=1)
 
 # tree view layout
 
-tree = ttk.Treeview(main_window, columns=("Name", "Receipt Number", "Item Name", "Quantity"), show="headings") # Treeveiw column headlines
+tree = ttk.Treeview(main_window, columns=("Row", "Name", "Receipt Number", "Item Name", "Quantity"), show="headings") # Treeveiw column headlines
 
 # Heading and layout for Tree Veiw
+tree.heading("Row", text="Row")
 tree.heading("Name", text="Full Name")
 tree.heading("Receipt Number", text="Receipt Number")
 tree.heading("Item Name", text="Item Name")
@@ -134,6 +132,20 @@ btn_quit = Button(main_window, text="Quit", command=quit, width=6)
 btn_submit.grid(row=7, column=1, padx=5, pady=10, sticky="w")
 btn_delete.grid(row=7, column=0, padx=5, pady=10, sticky="e")
 btn_quit.grid(row=8, column=1, padx=5, pady=10, sticky="e")
+
+
+# Calculate screen width and height
+screen_width = main_window.winfo_screenwidth()
+screen_height = main_window.winfo_screenheight()
+
+# Calculates window position to center it
+window_width = 870
+window_height = 600
+x_position = (screen_width - window_width) // 2
+y_position = (screen_height - window_height) // 2
+
+# Set window geometry to center of screen
+main_window.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
 
 # Main Window Loop
 main_window.mainloop()
