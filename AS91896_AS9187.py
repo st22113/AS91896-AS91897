@@ -63,27 +63,20 @@ def submit(): # Submits all enteries into the treeveiw
         messagebox.showerror(title="Entry Error", message="Please fill out all fields")
 
 def delete():
-    selected_item = tree.selection()  # Get selected items in the Treeview
-    if selected_item:
-        for item_id in selected_item:
-            item_index = tree.index(item_id)
-            answer = messagebox.askyesno(message="Do you want to delete this Entry?", title="Delete Confirmation")
+    selected_item = tree.selection()  # Recieves selected items in the Treeview
+    if selected_item: # Checks if there are any selected items in the Treeview 
+        for item_id in selected_item: # Iterates through each selected item's ID in the selected_item list
+            item_index = tree.index(item_id) # Retrieves the index of the selected item using its ID from Treeview, assigns it to the variable item_index.
+            answer = messagebox.askyesno(message="Do you want to delete this Entry?", title="Delete Confirmation") # Displays an message box confirming the action with the user
 
             if answer:
-                data = load_from_json()  # Load data from the JSON file
-                del data[item_index]  # Delete the corresponding item from the data list
-                save_to_json(data)  # Save the updated data back to the JSON file
-                tree.delete(item_id)  # Delete the selected item from the Treeview
+                data = load_from_json()  # Loads the data from the JSON file
+                del data[item_index]  # Deletes the corresponding item from the data list
+                save_to_json(data)  # Saves the updated data back into the JSON file
+                tree.delete(item_id)  # Deletes the selected item from the Treeview
     else:
-        messagebox.showerror(title="Error", message="Please select a row to delete")
+        messagebox.showerror(title="Error", message="Please select a row to delete") # Shows error message
                            
-           
-#def delete(): # Deletes a selected row in the tree view
-    #selected_item = tree.selection() # Selects Row
-    #if selected_item:
-        #tree.delete(selected_item) # ensures a row is selected and delettes seleted row
-    #else:
-        #messagebox.showerror(title="Error", message="Please select a row to delete")
 
 def clear_entries(): # Command to clear entries when submitted 
     entry_name.delete(0,END) # clear name
@@ -91,9 +84,9 @@ def clear_entries(): # Command to clear entries when submitted
     entry_item.delete(0,END) # clear item
     entry_quantity.delete(0,END) # clear quantity
 
-def center_message_box(title, message):
-    messagebox = tk.Toplevel(main_window)
-    messagebox.title(title)
+#def center_message_box(title, message):
+    #essagebox = tk.Toplevel(main_window)
+    #kmessagebox.title(title)
 
 # Main Window setup
 main_window = Tk() 
