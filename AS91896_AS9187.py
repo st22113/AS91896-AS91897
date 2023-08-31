@@ -10,12 +10,12 @@ import json
 
 # Commands
 def save_to_json(data):
-    with open("data.json", "w") as json_file:
-        json.dump(data, json_file, indent=4)
+    with open("entry_data.json", "w") as f:
+        json.dump(data, f, indent=4)
 
 def load_from_json():
     try:
-        with open("data.json", "r") as json_file:
+        with open("entry_data.json", "r") as json_file:
             data = json.load(json_file)
             return data
     except FileNotFoundError:
@@ -62,14 +62,28 @@ def submit(): # Submits all enteries into the treeveiw
     else:
         messagebox.showerror(title="Entry Error", message="Please fill out all fields")
 
-                 
-           
-def delete(): # Deletes a selected row in the tree view
-    selected_item = tree.selection() # Selects Row
+def delete():
+    selected_item = tree.selection()  # Get selected items in the Treeview
     if selected_item:
-        tree.delete(selected_item) # ensures a row is selected and delettes seleted row
+        for item_id in selected_item:
+            item_index = tree.index(item_id)
+            answer = messagebox.askyesno(message="Do you want to delete this Entry?", title="Delete Confirmation")
+
+            if answer:
+                data = load_from_json()  # Load data from the JSON file
+                del data[item_index]  # Delete the corresponding item from the data list
+                save_to_json(data)  # Save the updated data back to the JSON file
+                tree.delete(item_id)  # Delete the selected item from the Treeview
     else:
         messagebox.showerror(title="Error", message="Please select a row to delete")
+                           
+           
+#def delete(): # Deletes a selected row in the tree view
+    #selected_item = tree.selection() # Selects Row
+    #if selected_item:
+        #tree.delete(selected_item) # ensures a row is selected and delettes seleted row
+    #else:
+        #messagebox.showerror(title="Error", message="Please select a row to delete")
 
 def clear_entries(): # Command to clear entries when submitted 
     entry_name.delete(0,END) # clear name
