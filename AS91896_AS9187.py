@@ -9,17 +9,20 @@ import json
 
 
 # Commands
-def save_to_json(data):
-    with open("entry_data.json", "w") as f:
-        json.dump(data, f, indent=4)
 
+# Function to take the data from Treeview and save to JSON file
+def save_to_json(data):
+    with open("entry_data.json", "w") as f: # "w" = write mode
+        json.dump(data, f, indent=4) # JSON contents should be formatted with an indentation of 4 spaces.
+
+# Function is reponsible for loading the JSON file into the treeveiw 
 def load_from_json():
     try:
-        with open("entry_data.json", "r") as json_file:
-            data = json.load(json_file)
+        with open("entry_data.json", "r") as json_file: # "r" = read mode
+            data = json.load(json_file) # Reads the opened JSON file contents  
             return data
-    except FileNotFoundError:
-        return []
+    except FileNotFoundError: # Exception for error if no data is found
+        return [] # if no data is found returns line as empty list
 
 def quit(): # Exits the entire GUI
     answer = askyesno(title="Confirm", message="Are you sure you want to quit?")
@@ -57,8 +60,8 @@ def submit(): # Submits all enteries into the treeveiw
                         clear_entries() # When entries submitted clear all enttry boxes 
 
                         data = load_from_json()
-                        data.append({"name": name, "receipt": receipt, "item": item, "quantity": quantity})
-                        save_to_json(data) 
+                        data.append({"name": name, "receipt": receipt, "item": item, "quantity": quantity}) # Appends the data into the JSON list 
+                        save_to_json(data) # Passes updated data to the JSON file
     else:
         messagebox.showerror(title="Entry Error", message="Please fill out all fields")
 
@@ -165,7 +168,7 @@ y_position = (screen_height - window_height) // 2
 main_window.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
 
 # Load existing data from the JSON file
-existing_data = load_from_json()
+existing_data = load_from_json() # loads data from a JSON file
 for item in existing_data:
     tree.insert("", "end", values=(item["name"], item["receipt"], item["item"], item["quantity"]))
 
