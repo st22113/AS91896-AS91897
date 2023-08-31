@@ -84,10 +84,6 @@ def clear_entries(): # Command to clear entries when submitted
     entry_item.delete(0,END) # clear item
     entry_quantity.delete(0,END) # clear quantity
 
-#def center_message_box(title, message):
-    #essagebox = tk.Toplevel(main_window)
-    #kmessagebox.title(title)
-
 # Main Window setup
 main_window = Tk() 
 main_window.geometry("870x600")
@@ -120,10 +116,10 @@ tree.grid(row=1, column=0, columnspan=2, padx=(30, 30), pady=(20, 20)) # Grid pl
 
 # Labels For Entry Boxes
 label_window = Label(main_window, text="Julie's Party Hire", font="helvetica 35 bold", bg='#6e758a',  fg="white") # # Heading Title
-label_name = Label(main_window, text="Full Customer Name :", bg='#6e758a') # name label
-label_receipt = Label(main_window, text="Receipt Number :", bg='#6e758a') # receipt label
-label_item = Label(main_window, text="Item Name :", bg='#6e758a') # item label
-label_quantity = Label(main_window, text="Quantity of Items :", bg='#6e758a') # quantity label 
+label_name = Label(main_window, text="Full Customer Name :", font="helvecta 15 bold", bg='#6e758a') # name label
+label_receipt = Label(main_window, text="Receipt Number :", font="helvecta 15 bold", bg='#6e758a') # receipt label
+label_item = Label(main_window, text="Item Name :", font="helvecta 15 bold", bg='#6e758a') # item label
+label_quantity = Label(main_window, text="Quantity of Items :", font="helvecta 15 bold", bg='#6e758a') # quantity label 
 label_window.grid(row=2, column=0, columnspan=2) 
 
 # Label Grid placement
@@ -145,9 +141,9 @@ entry_item.grid(row=5, column=1, pady=5, padx=5, sticky="w")
 entry_quantity.grid(row=6, column=1, pady=5, padx=5, sticky="w")
 
 # Buttons created
-btn_submit = Button(main_window, text="Submit", command=submit, width=6, fg="green")
-btn_delete = Button(main_window, text="Delete Selected", command=delete, fg="red")
-btn_quit = Button(main_window, text="Quit", command=quit, width=6, bg='#6e758a')
+btn_submit = Button(main_window, text="Submit", command=submit, width=6, font="helvecta 14",fg="green")
+btn_delete = Button(main_window, text="Delete Selected", command=delete, font="helvecta 14", fg="red")
+btn_quit = Button(main_window, text="Quit", command=quit, width=6, font="helvecta 14", bg='#6e758a')
 
 # Button Grid
 btn_submit.grid(row=7, column=1, padx=5, pady=10, sticky="w")
@@ -175,3 +171,4 @@ for item in existing_data:
 
 # Main Window Loop
 main_window.mainloop()
+
