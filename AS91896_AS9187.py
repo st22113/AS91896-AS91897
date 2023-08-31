@@ -5,9 +5,21 @@ from PIL import ImageTk, Image
 from tkinter import Label
 from tkinter import ttk
 import tkinter as tk
+import json
 
 
 # Commands
+def save_to_json(data):
+    with open("data.json", "w") as json_file:
+        json.dump(data, json_file, indent=4)
+
+def load_from_json():
+    try:
+        with open("data.json", "r") as json_file:
+            data = json.load(json_file)
+            return data
+    except FileNotFoundError:
+        return []
 
 def quit(): # Exits the entire GUI
     answer = askyesno(title="Confirm", message="Are you sure you want to quit?")
@@ -43,9 +55,12 @@ def submit(): # Submits all enteries into the treeveiw
                     else:
                         tree.insert("", "end", values=(name, receipt, item, quantity))
                         clear_entries() # When entries submitted clear all enttry boxes 
+
+                        data = load_from_json()
+                        data.append({"name": name, "receipt": receipt, "item": item, "quantity": quantity})
+                        save_to_json(data) 
     else:
         messagebox.showerror(title="Entry Error", message="Please fill out all fields")
-
 
                  
            
@@ -75,22 +90,21 @@ main_window.configure(bg='#6e758a') # programme background colour
 
 
 # PIP Image insert
-image_path = "/Volumes/PHOENIX/julieparty.jpg"
+image_path = "/Volumes/PHOENIX/julieparty.png"
 original_image = Image.open(image_path)
 # Desired size mage
 desired_size = (100, 100)
 resized_image = original_image.resize(desired_size)
 # Convert the resized image to PhotoImage
 img1 = ImageTk.PhotoImage(resized_image)
-label_image = tk.Label(main_window, image=img1)
+label_image = tk.Label(main_window, image=img1, bg='#6e758a')
 label_image.grid(row=2, column=1)
 
 # tree view layout
 
-tree = ttk.Treeview(main_window, columns=("Row", "Name", "Receipt Number", "Item Name", "Quantity"), show="headings") # Treeveiw column headlines
+tree = ttk.Treeview(main_window, columns=("Name", "Receipt Number", "Item Name", "Quantity"), show="headings") # Treeveiw column headlines
 
 # Heading and layout for Tree Veiw
-tree.heading("Row", text="Row")
 tree.heading("Name", text="Full Name")
 tree.heading("Receipt Number", text="Receipt Number")
 tree.heading("Item Name", text="Item Name")
@@ -126,7 +140,7 @@ entry_quantity.grid(row=6, column=1, pady=5, padx=5, sticky="w")
 # Buttons created
 btn_submit = Button(main_window, text="Submit", command=submit, width=6, fg="green")
 btn_delete = Button(main_window, text="Delete Selected", command=delete, fg="red")
-btn_quit = Button(main_window, text="Quit", command=quit, width=6)
+btn_quit = Button(main_window, text="Quit", command=quit, width=6, bg='#6e758a')
 
 # Button Grid
 btn_submit.grid(row=7, column=1, padx=5, pady=10, sticky="w")
@@ -146,6 +160,11 @@ y_position = (screen_height - window_height) // 2
 
 # Set window geometry to center of screen
 main_window.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
+
+# Load existing data from the JSON file
+existing_data = load_from_json()
+for item in existing_data:
+    tree.insert("", "end", values=(item["name"], item["receipt"], item["item"], item["quantity"]))
 
 # Main Window Loop
 main_window.mainloop()
